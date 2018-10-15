@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<title>List</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<style type="text/css">
+	form{
+	width:40%;
+ 	padding : 1.5%;
+    background: white;
+	}
+    td, th{
+        padding: 1.5%;
+        border : 1px solid #000;
+    }
+    th{
+        background: lightgrey;
+    }
+    .paddingr{
+        padding-right: 2%;
+        font-weight: bold;
+    }
+    .paddingl{
+        padding-left: 10%;
+    }
+	.button{
+    font-weight: bold;
+	background-color: #000; 
+    border: none;
+    color: white;
+    padding: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+	}
+    table{
+        width: 100%;
+        padding : 1%;
+        border : 2px solid #000;
+        border-collapse: collapse;
+
+    }
+	</style>
+	</head>
+    <body style = "background: grey;">
+        <center><span width = "30%"></span>
+        <span width = "40%">
+        <h1 style = "color: white;"> Home </h1>
+        <h3 style = "color: white;"> List of People</h3>
+        <a href = "{% url 'createPerson' %}" class="button">Add a new entry</a>
+        <a href = "{% url 'index' %}" class="button">Refresh</a>
+        <ul>
+            {% for Person in Person %}
+                <form name ="form1" method="POST">
+                {% csrf_token %}
+                <table>
+                    <tr>
+                        <th colspan = "2">User Details : {{Person.FirstName }} {{ Person.LastName}}</td>
+                    </tr>
+                    <tr>
+                        <td class = "paddingr">Name : </td>
+                        <td class = "paddingl">{{ Person.FirstName }} {{ Person.LastName}}</td>
+                    </tr>
+                    <tr>
+                        <td class = "paddingr"> Phone no: </td>
+                        <td class = "paddingl">{{ Person.PhoneNo }}</td>
+                    </tr>
+                    <tr>
+                        <td class = "paddingr"> Address: </td>
+                        <td class = "paddingl">{{ Person.Address}}</td>
+                    </tr>
+                    <tr>
+                        <td class = "paddingr">File Name: </td>
+                        <td class = "paddingl">{{ Person.FileName }}</td>
+                    </tr>
+                    <tr>
+                        <td class = "paddingr">Extended <br> Addresses (if any): </td>
+                        <td class = "paddingl">
+                        {% for AddPerson in AddPerson %}
+                        {% if AddPerson.AddID_id == Person.id %} 
+                            <li> 
+                            {{ AddPerson.ExtendedAddress }} 
+                            </li>
+                        {% endif %}
+                        {% endfor %}
+                        </td>
+                    </tr>
+                </table>
+                <a target="_blank" class = "button" href="{{ Person.URL }}"><b>View uploaded image</b></a>
+                <a class ="button" href = "{{ Person.URL }}" download><b>Download image</b></a>
+                <a href = "{% url 'editView' Person.id %}" class="button">Edit</a>
+                <a href="{% url 'delete_person' Person.id %}" class="button" onclick = "{ alert('Entry will be deleted.'); }">Delete</a>
+                </form>
+            {% endfor %}
+        </ul>
+        </span>
+        <span width = "30%"></span></center>
+	</body>
+</html>

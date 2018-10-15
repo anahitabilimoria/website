@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<title>Form</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<style type="text/css">
+	form{
+	width:20%;
+  	border : 1px solid #000;
+ 	padding : 5px;
+  background: white;
+	}
+
+	.button{
+	background-color: #000; 
+    border: none;
+    color: white;
+    padding: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+	}
+	</style>
+	</head>
+<body style = "background: grey;">
+		<center>
+            <h3 style = "color: white;">Form</h3>
+            <span width = "40%"></span>
+		    <span>
+                <form enctype="multipart/form-data" method="POST" id="form" name = "form" action = "{% url 'createPerson' %}">
+                {% csrf_token %}
+                {% for Person in Person %}
+			     <p><b>First Name:</b>&nbsp;&nbsp;
+           <input type = "text" name = "FirstName" value = "{{ Person.FirstName }}" required>
+           </p> 
+			     <p><b>Last Name:</b>&nbsp;&nbsp;
+           <input type = "text" name = "LastName" value = "{{ Person.LastName }}" required>
+           </p>
+			     <p><b>Phone number:</b>
+           <input type = "text" name = "PhoneNo" value = "{{ Person.PhoneNo }}" required>
+           </p>
+           <input type = "hidden" id = "PID" name ="PID" value = "{{ Person.id }}">
+			     <p><b>Address: </b>&nbsp;
+           <input type = "text" name = "Address" value = "{{ Person.Address }}" required></p>
+           <b>Find your current image here: </b><br>
+           <a target="_blank" class = "button" href="{{ Person.URL }}"><b>Current image</b></a><br><br>
+           <b>Extended Addresses </b><br>
+              {% for item in list %}
+              <div>
+                {{ item | safe }}
+                <input type = "hidden" id = "extendedadd{{forloop.counter}}" name = "Array" required>
+                <input type = "button" id = "ExtendedAdd{{forloop.counter}}" value = "Delete" class = "button" name = "Delete" onclick = "clickk(this);">
+              </div>
+              {% endfor %}
+		           <p>
+               <input type ="button" value = "Add a field" class="add button" id = "add"/>
+               <input type ="submit" class="button" value = "Submit" id = "submit">
+               <a href = '{% url "index" %}' class="button"><b>Home</b></a>
+               </p>
+              {% endfor %}
+		        </form>
+            </span>
+		    <span width = "40%"></span>
+<script type="text/javascript">
+        function clickk(a) {
+                $(a).parent().remove();
+                };
+  $("#add").click(function() {
+   var lastField = $("#form div:last");
+      var intId = (lastField && lastField.length && lastField.data("idx") + 1) || 1;
+      var fieldWrapper = $("<div class=\"fieldwrapper\" id=\"field" + intId + "\"/>");
+      fieldWrapper.data("idx", intId);
+      var fName = $("<input type=\"text\" class=\"fieldname\" id = \"ExtendedAddress\" name = \"Array\" required>");
+      var removeButton = $("<input type=\"button\" class=\"remove button\" value=\"Delete\" /><p>");
+      removeButton.click(function() {
+          $(this).parent().remove();
+      });
+      fieldWrapper.append(fName);
+      fieldWrapper.append(removeButton);
+      $("#form").append(fieldWrapper);
+  });
+</script>
+	</body>
+</html>

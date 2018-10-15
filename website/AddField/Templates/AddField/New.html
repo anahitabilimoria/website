@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>Form</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style type="text/css">
+    form{
+    width:20%;
+    border : 1px solid #000;
+    padding : 5px;
+    background: white;
+    }
+
+    .button{
+    background-color: #000; 
+    border: none;
+    color: white;
+    padding: 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    }
+    </style>
+    </head>
+<body style = "background: grey;">
+        <center><h3 style = "color: white;">Form</h3><span width = "40%"></span>
+        <span><form  enctype="multipart/form-data" id="form1" method="POST" action = "{% url 'createPerson' %}">
+            {% csrf_token %}
+            <p>First Name: &nbsp;&nbsp;<input type = "text" name = "FirstName" required></p> 
+            <p>Last Name: &nbsp;&nbsp;<input type = "text" name = "LastName" required></p>
+            <p>Phone number: <input type = "text" name = "PhoneNo" required></p>
+            <p>Address: &nbsp;<input type = "text" name = "Address" required></p>
+            <p>Upload your picture here, it will be compressed if it exceeds 2MB:<br><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="file" name="myfile" required></p>
+            <p>
+            <input type ="button" value = "Add a field" class="add button" id = "add">
+            <input type="submit" class = "button" value="Submit" />
+            <a href = '{% url "index" %}' class="button">Home</a>
+       </p>
+        </form></span>
+        <span width = "40%"></span></center>
+<script>
+$(document).ready(function() {
+    $("#add").click(function() {
+        var ex = "Extended Address<br>";
+        var lastField = $("#form1 div:last");
+        var intId = (lastField && lastField.length && lastField.data("idx") + 1) || 1;
+        var fieldWrapper = $("<div class=\"fieldwrapper\" id=\"field" + intId + "\"/>");
+        fieldWrapper.data("idx", intId);
+        var fName = $("<input type=\"text\" class=\"fieldname\" id = \"ExtendedAddress\" name = \"Array\" required/>");
+        var temp = document.getElementById('ExtendedAddress');
+        var removeButton = $("<input type=\"button\" class=\"remove button\" value=\"Delete\" /><p>");
+        removeButton.click(function() {
+            $(this).parent().remove();
+        });
+        fieldWrapper.append(ex);
+        fieldWrapper.append(fName);
+        fieldWrapper.append(removeButton);
+        $("#form1").append(fieldWrapper);
+    });
+});
+
+</script>
+    </body>
+</html>

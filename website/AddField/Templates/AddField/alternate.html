@@ -1,0 +1,40 @@
+    Sahil's way, simple functions on add and delete for the div 
+
+                 <div style = "" id = "div0">
+                 <p>Extended Address: &nbsp;<input type = "text" name = "Array"></p>
+                 <input type ="button" value = "Delete" class="add button" id = "delete0" onclick="delete_address(this)">
+            </div>
+    <script>
+        var counter = 0  onclick = "add_address()"
+    function delete_address(a){
+        var element = a
+        element.parentNode.remove()
+    }
+
+    function add_address(){
+        var clone_element = document.getElementById('div0')
+        var new_element = $(clone_element).clone(true)
+        counter++
+        new_id = "div"+counter
+        del_id = "delete"+counter
+        $(new_element).children()[1].id = del_id
+        new_element.attr("id",new_id)
+        $(new_element).show()
+        $('#form1').append(new_element)
+    }
+</script>
+
+unction clickk(a){
+                      var suffix = a.id.match(/\d+/);
+                      var idnew = "extendedadd"+suffix;
+                      alert('The extended address will be deleted.');
+                      var extendedadd = document.getElementById(idnew).value;
+                      var n = extendedadd.split(" ");
+                      var Re =  n[n.length - 2];
+                      var hid = "<input type = \"hidden\" name = \"hid\" value = \""">" ;
+                      if(Re !== null){
+                          url = "{% url 'delete' 123 %}";
+                          url2 = url.replace('123', Re);
+                          document.location.href = url2;
+                        }
+                    };
